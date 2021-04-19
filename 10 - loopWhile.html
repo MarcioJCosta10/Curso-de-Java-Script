@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop While</title>
+</head>
+<body>
+    <script>
+        // Loop while executa um código enquanto a condição for verdadeira
+       let contador = 0;
+       while(contador < 5){
+           console.log(contador)
+           contador++;
+        }
+
+       let contador2 = 0;
+
+       // Para forçar a para do loop devemos usar o break;
+       while(contador2 <5){
+           if (contador2 ===3){
+               break;
+           }
+        console.log(contador2);
+        ++contador2;
+    
+
+       }
+       let contador3 = 0;
+
+       while(contador3 < 100){
+        if (contador3 % 3===0 && contador3 % 5 === 0 || contador3 % 5 == 5){
+            console.log(`Ping-Pong - ${ contador3}`) 
+        } else if(contador3 % 3 === 0 ){
+            console.log(`Ping - ${ contador3}`);                        
+        }else 
+        if (contador3 % 5 === 0 || contador3 % 5 == 5){
+            console.log(`Pong - ${ contador3}`);          
+
+        }        
+       ++contador3;
+    }
+
+
+
+
+    </script>
+</body>
+</html>
