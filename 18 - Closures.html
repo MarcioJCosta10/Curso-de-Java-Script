@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closures</title>
+</head>
+<body>
+    <script>
+
+        /*
+           1- Closures tira vantagem do Lexical Scope: Que é a habilidade da Engine JavaScript que te permite por exmplo:
+           Uma function dentro de uma outra function ter visisbilidade das variáveis declaradas na function PAI, no scopo pai externo;
+           Closure herda essa caracteristica;
+
+           2- Memorização do Scopo que foi criada: Capacidade de um scopo que você criou, por exemplo uma function que dentro tem outra function onde você imprime uma variavel declarada na function pai
+           na function filha;
+           Essa function filha consegue memorizar o scopo que ela foi criada, que é no scopo da function PAI, então toda vez que executarmos a function filha ela vai se lembrar
+           qual é o valor dessa variavel, mesmo que ela tenha sido criada no scopo da function externa
+        
+        */
+        // Exemplo:
+        function imprimeNome(){
+            let nome='Marciano';
+            return function(){
+                return nome;
+            }
+        }
+        //1ª Caracteristica que vemos é a caracrteristica de lexal Scope ou seja a function de dentro enxerga a variavel nome declarada no scopo PAI
+        //2ª Memorização, pois a variavel nome foi declarada na function imprime nome, quando eu executo imprime nome essa variável já foi
+       //Mesmo assim quando executo a function que imprime nome retornou ele ainda consegue se lembrar que a variavel nome com o valor Marciano 
+        var func = imprimeNome();
+       console.log(func())
+       console.log(func())
+       console.log(func())
+       console.log(func())  // Posso executar n vezes e a function sempre irá se lembrar que nome vale Marciano
+                            // Mesmo que a function pai imprimeNome ja tenha sido executada, as functions filhas ainda se lembrqa do scopo que foi criada e que nome vale Marciano Isso é Closures
+
+
+    // MAS POR QUE É IMPORTANTE:
+    // 1ª Permite criar funções e variáveis Privadas:
+
+    // exemplo:
+                                // Criando uma biblioteca que outros desenvolvedores vão utilizar, mas tem funções e variáveis que são especificas da minha biblioteca 
+                                 // e não quero que quem vai usar essa biblioteca enxergue essas funções e bibliotecas, para isso uso functions e variáveis privadas, ou seja não é visivel fora desse scopo       
+     function minhaBiblioteca(){
+         function auxiliar(valor){
+            return 10 + valor;
+         }
+        return{
+            add5(){
+            //return 10+5;
+            return auxiliar(5);
+            },
+            add7(){
+                //return 10+7;
+                return auxiliar(7);
+            }
+        }
+
+     }
+    var biblioteca = minhaBiblioteca();
+    console.log(biblioteca.add5());
+    console.log(biblioteca.add7());
+    console.log(biblioteca.add5());
+    console.log(biblioteca.add7());// Posso chamar quantas vezes quiser que a função auxiliar será lembrada
+    console.log(biblioteca.add5());
+    console.log(biblioteca.add7());
+     // Até aqui não vimos o poder de clousure, mas vamos dizer que tenho uma função dentro da minha biblioteca que não quer que ela seja enxergada,
+     // Então vou nesse exemplo criar um função auxiliar e veremos que irá retornar a mesma coisa;
+     // SÓ QUE:Eu estou usando a caracteristica de clousure que é poder criar uma função privada apenas a minha biblioteca, não é exergada fora da minha biblioteca
+     // mas mesmo assim a partir do momento que executo a função minhaBilioteca a minha função auxiliar já foi, mas quando executar as funções filhas que foram declaradas em um escopo 
+     // onde também foram declaradas a função auxiliar ela vai se lembrar sempre que a função auxiliar existe, mesmo que dentro das filhas auxiliar não exista mas existe no mesmo scopo que as filhas foram criadas
+
+
+
+
+// 2ª Te ajuda a evitar funções anonimas, pois funções anônimas para leitura de código é ruim
+//Exemplo:
+//Antes de prosseguir: setTimeout //Aceita dois parametros 1º A function a ser executada 2º Depois de quanto tempo , Função do javascript que é um agendador, para depois de algum tempo vai executar algo
+
+//Primeira função
+function inicializa(){
+    let nome='Marciano';
+    setTimeout(function(){ // Mas eu não quero usar uma função anônima, e aqui temos uma função anônima    
+     console.log(nome);
+    }, 1000);
+} 
+inicializa();
+
+// Então vou criar um function aqui fora
+//Segunda Função
+function imprimeNomeCompleto(nome){
+    return function(){       // Aqui estou declarando a function que irá para o setTimeOut
+        console.log(nome, "Costa"); 
+    }
+}
+
+function inicializa2(){
+    let nome='Marciano';
+    setTimeout(imprimeNomeCompleto(nome), 1000);// Então não preciso invocar a function aqui, é o setTimout que invoca ela para mim
+}                                               // Porém se eu usar a variavel nome ela dará erro pois nome não existe detro de imprimeNomeCompleto
+                                                // Como resolver? Por isso usamos closure então preciso retornar uma function para o setTimeout
+inicializa2();
+
+
+    </script>
+</body>
+</html>
