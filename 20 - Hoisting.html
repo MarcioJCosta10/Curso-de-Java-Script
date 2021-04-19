@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoisting</title>
+</head>
+<body>
+    <script>
+
+        /* Hoisting acontece pela forma que a engine JavaScrip lê nosso código
+        Quando escrevemos nosso código a engine na hora da leitura faz algumas modificações
+        na ordem do nosso código;
+        Uma delas é mover as declarações de variáveis e functions para o topo do scopo a qual ela pertence
+               
+        */
+
+        //Exemplo:
+
+        console.log(a); // Dará um erro pois a não exite
+        var a;          // se eu declar a variável var a passa a dar undefined
+                        // Isso acontece porque a engine pega todas as declarações e move para o topo do scopo a qual ela pertence
+        //Depois que a engine  passa ela faz isso:                            
+
+        //var a;
+        //console.log(a);
+        // Se eu definir um valor para essa variável vai continuar dando undefined
+
+        var a = 123 // pois aqui existe duas coisas a declaração de var a e atribuição de de 123 em a
+                    // Então a engine vai elevar apenas a declaração, e o a =123 continua no mesmo local
+
+       /* É como tivesse sido feito isso:
+       var a 
+       console.log(a)             ;
+       a = 123
+       */
+
+       // Se eu imprimir aqui:
+       console.log(a); // Aqui vai funcionar
+
+      // E ASSIM QUE A ENGINE FUNCIONA ELA MOVE A DECLARAÇÃO PARA CIMA E A ATRIBUIÇÃO CONTINUA NA MESMA LINHA
+      // Com CONST E LET NÃO É ASSIM POIS TEM O COMPORTAMENTO DIFERENTE
+      
+      //console.log(ddd);
+       //let ddd = 21 // Sara um erro de que não pode acessar ddd antes de ser inicializado
+        // Mas porque não deu undefine e deu reference error?
+        // O Scopo ao qual está let enxerga que ddd existe, porém  ela não é inicializada no inicio do scopo
+        // Por mais que ddd seja visto naquele scopo, a engine identifica isso, ele não inicializa no topo do seu scopo aquela variável por isso da esse erro de reference erro
+        // Isso é o : TEMPORAL DEAD ZONE é o gap da utilização da variável e a declaração dela
+        // Por isso da reference error diferenter do var de a declaração sofre o hoisting
+
+        // COM CONSTANTES É A MESMA COISA: elas não tem o hoisting e sim o temporal dead zone
+        // Se tentarmos usar o valor de const antes de ser declarada dará o refernce error
+
+        //console.log(idade);
+        //const idade = 37;
+
+        // A mesma coisa acontece com uma function
+
+        //console.log(soma(10,5));// Se eu tentar chamar a função antes de sua declaração vai dar erro dizendo que essa soma não é uma função
+        var soma = function(a,b){
+            return a+b;
+        }
+        console.log(soma(10,5)); // Se mover para cá vai funcionar
+
+        // O que a engine fez nesse caso?
+        /*
+            var soma; // trouxe var aqui para cima
+            console.log(soma(10,5));
+            soma = function(a,b){ // Aqui atribuiu o valor
+                return a + b;
+            }
+
+        
+        */
+
+    // Se mudar para let dará o reference error pois cairá no temporal dead zone
+    /*console.log(soma2(10,5));       
+    let soma2 = function(a,b){
+            return a+b;
+        }
+    */
+
+    // Existe o conceito conforme o exemplo acima de function expressions, onde conseguimos armazenar uma function em uma variável ou em uma constante.
+    // E exite o function declaration, e a declaração de function no JavaScritp é a forma tradicional
+   
+    console.log(subtrai(10,5));
+ 
+    function subtrai(a,b){ // Forma tradicional function declaration, e toda declaração seja de variaveis ou de functions sofre hoisting
+        return a - b;      // Então function subtrai vai sofrer o hoisting para o scopo que ela está 
+                           // Então se eu tentar chamar a function antes ela vai funcionar
+                           // Então vou conseguir usar uma function antes dela ser criada e funciona pois ela sofreu o hoisting
+                           // Então a engine, pegou a function e elevou para o topo do scopo a qual ela pertence
+                           /* E na  verdade ficou assim o código:
+                             function subtrai(a,b){
+                                 return a - b;
+                           }
+                           console.log(subtrai(10,5));
+                           */
+                           // Então function declaration sempre vai elevar para o topo mas function expression não;
+                           // Function expression vai sofrer o hoisting igual em variaveis, vai subir a declaração mas não subirá a atribuição 
+
+    }
+
+
+    // Testando o hoisting dentro do scopo de uma function
+     function testaHoisting(){
+         console.log('testaHoisting',aaa);
+         var aaa=123;// Vai dar undefined pois a engine moveu a declaração para o topo
+         console.log('testaHoisting',aaa);// Ai aqui vai imprimir
+     }
+
+     testaHoisting(); // Aqui vai dizer que aaa is not defined
+
+     // Desvantagem: Deixa o código desorganizado e é ruim para a leitura de código
+     // Vantagens:
+
+     function calcula(){         // Então vimos que na function calcula fez muita logica, criou functions blablabla e no fim preciso dar um return do resultado final da function calcula
+        return geraResultado();  // Se não tirar a vantegem de hoisting, vamos ter que criar toda sua lógica e o final retornar o valor
+                                 // hoisting posso mover o return da function calcula para cima e já retonrar direto   
+                                  // Isso chamamos de código executável, pois a logica, declarações de functions está toda embaixo
+                                  // E na parte de cima fica seu código executável
+                                  // Pois como nesse scopo sofreu hoisting a engine moveu todas as functions declaration para cima e seu código executavel está em baixo
+                                  // mas na pratica está ao cotrario
+                                  // ou seja eu não preciso ira até o final do código para dar o return
+         /*
+         Muita lógica de código aqui
+         */
+         function soma(a,b){
+             return a+ b
+            }
+         function geraResultado(){
+             return (10+5)/3
+            }
+        // return geraResultado(); movi para cima
+
+     }  
+     console.log(calcula());    
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
