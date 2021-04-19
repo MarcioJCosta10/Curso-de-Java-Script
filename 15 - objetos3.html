@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetos</title>
+</head>
+<body>
+    <script>
+        
+        // Iterar Objetos  com loop for
+
+        let usuarioFunction = {
+            nome: 'Marciano Jose da Costa',
+            idade: 37,  
+            sexo: 'M',
+            pais: 'Brasil'
+        };           
+       
+        let props = Object.keys(usuarioFunction);
+        console.log(props);
+
+        // A sacada é que vou iterar sobre o array que retornou do object keys e não sobre o objeto em si
+
+        for ( let i = 0; i < props.length ; i++) {
+            //console.log(props[i])
+            console.log('usuarioFunctio1',usuarioFunction[props[i]])
+        };
+
+        for (let prop of props) {
+            console.log('ususarioFunction2',usuarioFunction[prop])  
+        };
+
+        // Loop for in - É próprio para iterar objetos
+        // Ao inves de passar um array vou passar o objeto que eu quero iterar
+       
+        for (let prop2 in usuarioFunction) {
+            //console.log('A chave (nome)',prop2);  // No prop2 ele vai retornar o nome da propriedade (A chave)
+            //console.log('O valor ',usuarioFunction[prop2]); // Se eu quiser o valoir dessa propriedade preciso passar o objeto e entre colchetes o nome da propriedade
+            console.log(prop2,usuarioFunction[prop2]);
+        }
+
+        //Para evitar Herança protutipica exite um método, vai garantir que a propriedade do objeto foi você que criou
+       //hasOwnProperty 
+       for (let prop2 in usuarioFunction) {
+           if (usuarioFunction.hasOwnProperty(prop2)) /// Se essa propriedade foi definidad de fato dentro desse objeto e não foi herdada de algum luigar
+        console.log(prop2,usuarioFunction[prop2]);
+        }
+
+    </script>
+</body>
+</html>
