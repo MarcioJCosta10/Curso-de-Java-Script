@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strings</title>
+</head>
+<body>
+    <script>        
+        let nome ="Marciano Jose da Costa";
+        console.log(nome);
+        //Saber a quantidade de caracteres da variável
+        console.log(nome.length);
+
+        //A string nem precisa estar em uma variável
+        console.log('Programador'.length);
+
+        // Converter para maiúsculo e minúsculo
+        console.log(nome.toLowerCase());
+        console.log(nome.toUpperCase());
+       
+        //Procurar um trecho ou uma palavra dentro de um texto e retornar o indice do início da palavra
+        console.log(nome.indexOf('Jose'));
+        console.log(nome.indexOf('Teste'));
+        
+        //  Substituir uma palavra por outra se caso encontrar no texto procurado
+        console.log(nome.replace('Marciano','Marcio'));
+
+        // retornar uma fatia do texto 
+        console.log(nome.slice(3,8));
+
+        //Remover espaços iniciais e finais de uma string
+        let canalYouTube = "      Programador a bordo     ";
+        console.log(canalYouTube.trim());
+
+        //Concatenar Strings com variáveis
+        let autor = "Marciano";
+        console.log('o canal do Youtube ' + canalYouTube.trim()+ ' foi criado por ' +autor )
+
+        //Concatenar String com template String
+        console.log(` O Canal do YouTube ${canalYouTube.trim()} foi criado por ${autor}`)
+
+
+       
+
+    </script>
+</body>
+</html>
