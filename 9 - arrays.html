@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays</title>
+</head>
+<body>
+    <script>
+      // Array é um tipo de valor no JavScript que permite guardar diversos outros tipo de valores, é semelhante a uma lista
+
+      let numeros = [5,3,12,17,10,99];
+
+      // imprimir o valor de determinado indice
+      console.log(numeros);
+      console.log(numeros[2]);
+      console.log(numeros[5]);  
+      console.log(numeros[0]);
+
+    //Saber o tamanho do array
+      console.log(numeros.length);
+
+    // remover o último elemento do array e retorna esse valor para você
+    console.log(numeros.pop());
+    console.log(numeros);
+
+    //Posso guardar esse valor em uma variável     
+    let numeroRetornado = numeros.pop();
+    console.log('Numero retornado', numeroRetornado);
+    console.log(numeros);
+
+    //Retornar uma fatia de um array
+    /*ATENÇÃO O SLICE NÃO RETORNA A ÚLTIMA POSIÇÃO*/
+    console.log(numeros.slice(0,2))
+
+    let stringFatiada = 'Marciano Jose da Costa é um programador extremamente dedicado!';
+    console.log(stringFatiada.slice(0,9));
+
+    // Juntar todos os valores do array e tranforma em um string
+    console.log(numeros.join('--'));    
+
+    let usuarios = [
+        'Marciano',
+        37,
+        'Programador',
+        2021,
+        'Brasileiro'
+
+    ]
+    // Colocar novo elemento no fim do array
+    usuarios.push('SP');
+    console.log(usuarios)
+
+    // Verificar se tal valor está dentro do meu array e retorna true ou false
+    console.log(usuarios.includes('Brasileiro'));  
+    console.log(usuarios.includes('japones')); 
+    console.log(usuarios.includes(2019));   
+    
+    // Verificar se o elemento está no array, se encotrar vai retornar o indice desse elemento, se não encontrar vai retornar -1
+    console.log(usuarios.indexOf(2021));
+    console.log(usuarios.indexOf('japones'));    
+
+    // Como juntar dois arrays fazendo um MERGE
+    let array1=[3,2,1];
+    let array2=['Pragramador','a','Bordo'];
+
+    // esse será meu resultado final [3,2,1,'Pragramador','a','Bordo'];
+      /*let resultados=array2.concat(array1); Se quiser inverter a ordem é só mudar as posições*/
+        let resultados=array1.concat(array2);
+        console.log(resultados);
+
+  /* Posso concatenar varios arrys*/   
+    let arraya=[3,2,1];
+    let arrayb=['Pragramador','a','Bordo'];
+    let arrayc=['teste','fulano', 'ciclano'];
+     
+    let juntarTresOuMaisArrays = arraya.concat(arrayb).concat(arrayc);
+    console.log(juntarTresOuMaisArrays);
+
+    //FORMA MAIS SIMPLE DE FAZER CONCAT DE ARRAY USANDO O SPRAD ...
+    // Precisa estar dentro de um array
+    console.log([...array1,...array2,...arrayc]);
+
+    // ARRAY DESTRUCTION
+    /*Antes era assim para se imprimir valore de um array que foram para uma varaiável*/
+    console.log(usuarios)
+    let nomeTeste = usuarios[0];
+    let idadeTeste = usuarios[1];
+    let anoteste = usuarios[3];
+    console.log(nomeTeste,idadeTeste,anoteste);
+
+    //Com EcmaScript6 podemos fazer assim
+    let [nome, idade, ,ano, nacionalidade] = usuarios
+    console.log(nome,idade,ano,nacionalidade)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>;
