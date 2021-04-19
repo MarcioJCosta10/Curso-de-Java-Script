@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map, filter e reduce</title>
+</head>
+<body>
+
+    <script>
+        const numeros = [2,3,6,5,10];
+        let novoArrayNumeros =[]; 
+        for ( let i = 0; i < numeros.length; i++){
+            novoArrayNumeros.push(numeros[i]*2)
+        } 
+        console.log(numeros);
+        console.log(novoArrayNumeros);
+
+        /* map oferece uma forma mais elegante de fazer a mesma coisa acima com 
+        caracteristicas de programação funcional que permite não precisar ficar 
+        criando variaveis e constantes fora do scopo que ele pertence,  uma caracteristica 
+        da programação funcional e você justamente não mudar o valor de uma variável se ela
+        não está declarada naquele scopo.
+        No exemplo acima estamos no scopo do for e tivemos que criar uma vaiável fora do
+        scopo do for para poder ficar modificando ele e retornar ele no final
+        com map não precisamos fazer isso*/
+        
+        //map é um método de array
+       const novoArrayMap = numeros.map(function(numero){ // map é uma function que espera que passemos uma função de call back para ela
+                      // essa função de call back é para manipular cada valor do array 
+                      // então esse map vai iterar os valores do array um a um    
+                      // e ele vai aplicar em cada valor a função que passarmos agora
+                      //function(numeros) essa function vai receber a cada iteração o valor da posição do array que ele está iterando no momento
+        //console.log(numero);
+        return numero*2; // então a cada irteração eu quero pegar o numero 
+                         // e retornar 
+                         // todo map retorna um novo array no final  
+                         // então por isso preciso armazenar em uma variável                         
+        })
+
+        console.log('NovoArrayMap',novoArrayMap); //Aqui vimos que aconteceu exatamente a mesmo coisa
+
+        // Com ECMA6 podemos usar também arrow functions no nosso map e fica muito mais curto
+        //exemplo:
+        const arrayMapArrow = numeros.map(numero => numero*2)
+        console.log('arrayMapArrow',arrayMapArrow);
+        
+        // e podemos deixar ainda mais curto
+        console.log('arrayMapArrow2', arrayMapArrow2 = numeros.map(numero => numero*2))
+
+        // exemplo para usar o map em um array de strings
+
+        const nome = ['Marciano','Jose', 'Teste','Fulano de Tal'];
+        const nomeMinusculos = nome.map(function(nome){// O parametro nome é o valor que está iterando
+        return nome.toLowerCase() 
+    });
+        console.log(nome)
+        console.log(nomeMinusculos); 
+        
+        // Posso diminuri transformando em uma arrow function
+        console.log('Map e Arrow', nomeMinusculosArrow = nome.map(nome => nome.toLocaleLowerCase()));
+
+        
+
+        //filter é quase igual ao map nos passamos o array que ele vai iterar, passamos a função de call back que vai receber o valor a sintaxe e parcida também array.filter()
+        // A diferença é que a função filter precisa retornar um valor boolean true ou false
+        // filter serve para filtar o array se retornar true ele vai armazenar aquele valor do array
+        // se retornar false não irá armazenar o valor do array
+
+        // exemplo: vamos filtar o array por numeros múltiplos de 2
+        /*
+        let mult2 = []; // array auxiliar que vai receber esse filtro
+         for ( let i =0; i < numeros.length; i++) { // percorre o array
+                if ( numeros[i] % 2 === 0 ) { // compara se resta 0
+                    mult2.push(numeros[i]); // coloca dentro do arra auxiliar
+                }
+        }
+        */
+        const numerosFiltrados = numeros.filter(function(numero){
+            if (numero % 2===0) {
+                return true;
+            } else {
+                return false;
+            } 
+        })
+        console.log('Filtro com filter',numerosFiltrados)
+        
+       /*
+        //Simplificando evitando a redundância -
+
+        const numerosFiltrados = numeros.filter(function(numero)
+            {
+            return (numero % 2===0) 
+        })
+        console.log('Filtro com filter',numerosFiltrados)
+        */
+       // Simplificando com Arrow Functions
+
+       /* 
+       const numerosFiltrados = numeros.filter(numero => numero % 2===0 );
+
+        console.log('Filtro com filter',numerosFiltrados)
+        */
+        // filter devemos sempre utilizar para retoronar um array filtrado
+
+        // Conseguimos juntar map e filter
+
+        const arrayMapFilter = numeros.filter(numero => numero % 2 === 0).map(numero => numero * 2 )
+        console.log('Array com Map e Filter',arrayMapFilter);
+
+        // Reduce ele também itera sob um array como map e filter faz a diferença e que ele não retornar um array apenas, pode retornar também numero, objetos, string
+        //Exemplo: retornar a soma de um array em um único número:
+        //1º com for normal
+
+        let soma = 0;
+        for (let i = 0; i < numeros.length; i++){
+            soma = soma + numeros[i];
+        }
+        console.log('For normal:',soma);
+
+        const somaReduce = numeros.reduce(function(valorAcumulador, valorArray ) {    // reduce é uma function que espera pelo menos 2 parâmentos
+        return valorAcumulador + valorArray                        // o 1º é functions e o 2º parâmetro é o valor inicial
+        }, 0)                                // o valor inicial tem o mesmo papel da variável soma que usamos no loop normal
+                                            // nesse caso como vamos retornar um número o segundo parametro é zero como se fosse let soma = 0;
+                                             // se eu fosse rertornar um objeto teria que passar para o 2º parâmetro um {} objeto vazio ou com alguma propriedade
+                                             // Se fosse retornar uma string seria talvez uma string vazia ''
+                                             // o primeiro parametro da functio conforme vai iterando o valor vai se acumulando no parâmetro valor acumulador
+                                             // o segundo paramentro da function é de fato o valor que estou iterando no array
+        
+        console.log('Soma reduce',somaReduce);
+
+        // E posso usar com Arrow Function 
+        const somaReduceArrow = numeros.reduce((valorAcumulador, valorArray ) => valorAcumulador + valorArray , 0)           
+        console.log('Soma Reduce com Arrow',somaReduceArrow)
+
+        //Exemplo: Reduce
+        // Vou passar para o reduce um array de objetos pessoas
+        // Vou passar no reduce e quero que ele retorne um objeto a chave objeto onde vai 
+        // ter a chave maiores e dentro de maiores vai ser um array só com as pessos que são maiores
+        // e detro de menores vai ter um array só com os menores
+
+        //Meu Input dos dados:
+
+        const pessoas =[
+            {
+                nome : 'Marciano',
+                idade : 37
+            },
+            {
+                nome:'João',
+                idade: 14
+            },
+            {
+                nome: 'Maria',
+                idade:23
+            },
+            {
+                nome: 'Joana',
+                idade: 21
+            },
+            {
+                nome:'Lucas',
+                idade:32
+            },
+            {
+                nome: 'Matheus',
+                idade:15
+            },
+            {
+                nome:'Isa',
+                idade:23
+            },
+            {
+                nome:'Luiza',
+                idade:17
+            }]
+
+
+            // Meu output é a como quero minha saída
+
+            /*
+            {maiores:[
+             {
+                nome : 'Marciano',
+                idade : 37
+            },
+            {
+                nome: 'Maria',
+                idade:23
+            },
+            {
+                nome: 'Joana',
+                idade: 21
+            },
+            {
+                nome:'Lucas',
+                idade:32
+            },           
+            {
+                nome:'Isa',
+                idade:23
+            },
+           
+              ]
+            }
+            
+              {menores:[
+          
+            {
+                nome:'João',
+                idade: 14
+            },                    
+            {
+                nome: 'Matheus',
+                idade:15
+            }
+            {
+                nome:'Luiza',
+                idade:17
+                }
+              ]
+            }
+            
+            */
+           const pessoasAgrupadas = pessoas.reduce(function(valorAcumulador,valorArray){//meu redue aceita 2 parâmetros, uma functio e um valor inicial
+                                                                                        // Na minha function tenho o valorAcumulador que na primeira iteração é o meu valor inicial meu objeto
+                                                                                       // O segundo parametro da minha function é como se fosse o map filter é o valor da iteração do array que no caso são as pessoas  
+            const propMairoOuMenor = valorArray.idade >= 18 ? 'maiores': 'menores';  // Aqui eu resgato qual é a chave que eu quero acessar do meu objeto inicial se é maiores ou menores
+                valorAcumulador[propMairoOuMenor].push(valorArray);                  // e com esse valor eu vou acessar o meu objeto valorAcumulador    
+                return valorAcumulador;                                               // então eu pego o valorAcumulador pego o objeto acesso a propriedade que eu quero que será maiores ou menores ele vai retornar um array fazendo isso eu dou um push adicionando a pessoa que estou iterando naquele momento
+                                                                                      // então ele vai saber se onde deve inseri naquele momento se é maior ou menor  
+                                                                                      // No final ele retornar esse valor para armazenarmos em uma variável
+            },{ maiores:[], menores:[]}) // Meu valor inicial é o que eu quero retornar no final é um objeto com a chave maiores ou menores
+                                         // Essas respectivas chaves são arrays   
+        
+            console.log('Pessoas agrupadas', pessoasAgrupadas);
+
+
+    </script>
+    
+</body>
+</html>
