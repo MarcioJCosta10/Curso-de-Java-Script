@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operadores Lógicos </title>
+</head>
+<body>
+    <script>    
+    //Conseguimos negar um boleano
+     let a = true;
+     let b = false;
+
+     console.log('!a',!a);     
+     console.log('!b',!b);   
+    // Conseguimos fazer uma dupla negação
+    console.log('!!a',!!a); 
+    console.log('!!b',!!b); 
+    
+    //No javascript temos valores que são definidos como valores falsos
+    //null, undefined, '', false, 0
+
+    console.log(null);
+    console.log(!null);    
+    console.log(!!null);    
+
+    console.log(undefined);
+    console.log(!undefined);
+    console.log(!!undefined);
+
+    console.log(!'');
+    console.log(!!'');    
+    
+    console.log(0);
+    console.log(!0);
+    console.log(!!0);
+
+    // Operador and para ser verdadeiro todos os valores tem que ser verdadeiros
+    console.log(!!'texto');
+    console.log(!!20);
+    // O and espera que todos sejam verdadeiros para retornar o  último
+    console.log(10 && 'texto'&& 'Programador');
+
+    // Se der falso o and vai retornar o primeiro valor que deu falso    
+    console.log(null && 'texto'&& 'Programador');
+
+    // nesse caso vai retornar o primeiro valor que deu falso na expressão    
+    console.log('Passa' && 0 && 'Dev');
+
+    console.log('Passou' && null);
+    
+    console.log('Passou' && 0);
+    
+    console.log("false" && 100 && '' && 'teste' && null);    
+    
+    console.log( 10 > 5 && 7 < 10);
+    
+    console.log(10 > 5 && 10 > 11);
+
+/* OPERADOR OU || */
+
+// retorna o primeiro verdadeiro se ao menos um for verdadeiro 
+
+console.log(null || 'Porgramador a bordo');
+
+console.log(null || 'Porgramador a bordo' || 26);
+
+console.log(null || '' || 26);
+
+console.log('Programador a bordo' || 'teste');
+
+console.log(10 > 5 || 10 < 11);
+
+console.log(10 > 5 || 10 > 11);
+
+console.log(10 < 5 || 10 > 11);
+
+// Se todas forem falso retorna ultima falsa encontrada
+
+console.log(null || false || 0);
+
+//O operador and tem mais força que o operador ou
+console.log('Programador' && 2050 || '' &&  26);
+
+//Se tiver ter verdadeiros e um falso ele retornara o ultimo verdadeiro encontrado
+console.log('Programador' && 2050  && 'a bordo' || 0);
+
+console.log(null || !''  && 'Programador');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+       
+
+    </script>
+</body>
+</html>
