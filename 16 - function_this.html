@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function e o this</title>
+</head>
+<body>
+    <script>
+        /* O this é uma palavra reservada que dependendo de onde usamos ela tem valor diferente*/
+        /*DEPENDE DO CONTEXTO ONDE É USADA*/
+        //  O this tem valor diferente dependendo de onde é invocada
+        
+        console.log(this,window) // num contexto global this está rodando no navegador e possui o valor de window, é o objeto principal dentro do browser: tem todas as coisa do navegador, API DOM, API de AUDIO etc
+        
+        function usuario1( ) {
+            console.log(this); // aqui mesmo colocando this dentro da function ele ainda vale o window pois erdou o escopo global
+         };
+        usuario1();
+         
+         //Agora quero alterar o valor de this
+
+          // 1ª Forma de mudar o this é Quando invoco a function usando o new
+          // 
+          new usuario1(); // Agora this vale usuário e percebe que o usuário tem uma {} 
+                         // Quando invoco uma function com o new o this passa a valer a um objeto dessa function
+                         // é como se this fosse um próprio objeto representando a function   
+
+         // Se this é um obeto eu posso adicionar propriedades
+         
+         /*CURIOSIDADES*/
+         /*se this é um objeto então eu posso adicionar algumas propriedades e métodos a esse objeto*/
+         /*Ai é igual a aula de objetos onde adicionamos propriedades a objetos ja existentes*/
+         function Usuario( ) {
+            this.nome = 'Marciano', // Portanto, this é objeto ai eu posso colocar nome, idade e até functions
+            this.idade = 37,
+            this.soma = function (a,b) {
+                return a+b;               
+            };
+         };
+        console.log(new Usuario()); // Então vou invocar a function com o operador new
+                                    // Ai vai retornar o objeto com nome idade soma
+                                    // Então quando invocamos uma function com o operador new ele vai sempre retornar o this para vocÊ
+                                    // Nesse caso o this é um objeto, então eu tenho acesso as propriedade nome idade e soma
+        
+        
+        let usuario =  new Usuario(); // Então se ele retorna um objeto eu posso armazenar em uma variável
+        console.log(usuario);         // Aqui percebemos que á no mesmo
+
+        //Aqui podemos imprimir as propriedades separadas
+        console.log(usuario.nome); 
+        console.log(usuario.idade);
+        console.log(usuario.soma(2,5));
+        
+         /* Então é assim alteramos o valor de this dentro dessa função e uma das formas é com o new*/
+         /* Isso quer dizer que o this sempre vai alterar o seu valor dependendo da forma que a function é chamada*/
+        /*ENTÃO ISSO É O SCOPO DINÂMICO*/
+
+        // 2ª Forma de alterar o this através do método CALL
+
+         
+         
+        function personagem (p1, p2, p3){
+            console.log(p1,p2,p3);
+            console.log('Personagem this',this);
+        }
+        let personagemThis = { // Então eu quero que o this seja esse obejto
+             nome:"Marciano"
+        }
+        //personagem();      // Aqui percebemos que this ainda vale window
+        personagem.call(personagemThis, 'param1', 123, [5]) // Aqui chamamos a função com o call, mas eu consigo passar um this para essa function explicitmente
+                          // O primeiro parametro é o nome do this que a função vai usar  
+                          // Então quando eu invocar essa funciton eu vou passar esse objeto personagemThis
+                          // E this lá dentro vai valer esse objeto
+                          // Então na invocação da function estou dizendo qual é o this que ela vai usar
+                          // do Segundo parametro em diante vão ser os parametros que a function vai receber
+        /* ENTÃO É ASSIM O CALL O PRIMEIRO PARAMETRO É O THIS, E OS OUTROS PARAMENTROS SÃO O QUE A FUNCTION IRÁ USAR*/
+
+        // 3ª  Forma de alterar o this com o apply
+        // Vou usar a mesma functio de exemplo
+        personagem.apply(personagemThis,['  veja que é igual: param1', 123, [5]])// O primeiro parametro tbm é o this que eu quero passar para a function
+                                        // a unica diferença é a forma que eu passo os parametros pois preciso passar ele entre array
+
+        //4ª Forma de aletar o this é o bind
+        // A unica diferça é que ele não invoca a function diretamente, primeiro passamos o this, passamos os parametros ai ele retorna a funciton novamente, ai podemos invocar essa function depois
+        // Mas ele já passou quem vai ser o this e já passou os parametros dessa function
+
+        let retonoDoThisComBind = personagem.bind(personagemThis, "Olá" , "Mundo")// o primeiro parametro tbm é quem vai ser o this daquela function, e depois os parametros que eu queiser
+                                                                // Então eu estou chamando a função personagem to dizendo quem será o seu this e quem vai ser os seus tres parametros
+                                                                // Porém o bind não invoca a function
+                                                                // Então ele retorna uma nova funciton
+                                                                // Eu posso armazenar esse retorno que é uma function em uma variável
+                                                                // Ai quando eu precisar é so invocar essa functio
+        retonoDoThisComBind("!!!") // Agora sim ele imprimiu os parametros e depois o this
+                                  // inclusive no bind não preciso passar todos os paramentros que a function espera de uma vez  posso passar aqui em baixo
+
+        /* ENTÃO O BIND E BEM IGUAL AO CALL POREM NÃO INVOCA A FUNCTION IMEDIATAMENTE*/
+
+        //Arrow functions
+        /* CURIOSIDADE SÃO FUNÇÕES MAS NÃO TEM THIS, NÃO CONSEGUIMOS PASSAR UM CONTEXTO PARA ELA*/
+        /* SE ELA ESTIVER EM UM CONTEXTO QUE JÁ TENHA THIS VOCÊ CONSEGUE USAR O THIS DENTRO DELA*/
+        /* MAS NÃO CONSEGUIMOS PASSAR UM CONTEXTO PRÓPRIO PARA A ARROW FUNCTION E THIS SÓ TER UM SIGNIFICADO DENTRO DA FUNCTION*/
+        /* ISSO NÃO EXISTE COM ARROW FUNCTIONS*/
+
+        let soma = (a, b) => { // A sintaxe é diferente, omitimo a palavra function
+            return a + b;
+        }
+        console.log('A soma é: ',soma(110,10))
+
+        /* Existe uma forma mais curta usada quando retornamos uma function diretamente sem uma lógica no bloco*/
+        
+        let subtrai = (c, d) => c-d  // omitimos a palavra funcion as { } e o return pois o java script já sabe que tem um retorno
+        console.log('A subtração é: ',subtrai(10,3))
+
+        let multiplica = (x , y) =>(  // Se eu quiser colocar em uma linha abaixo preciso proteger esse retorno com parenteses ()
+            x * y)
+        console.log("A multiplicação é ", multiplica(5 , 10))
+
+        // Exemplo vamos dizer que quero uma function que retorna imediatamente um objeto
+
+        let retornaUsuario = () => ( // Caso de retornar um objeto é obrigatório sempre de proteger com parenteses para não confundir o javascript
+            {
+                nome:"Marciano",
+                idade: 37
+            }
+            )
+      console.log(retornaUsuario())  
+
+      // Exemplo quando criamos uma arrow function com apenas um parametro podemos omitir também os parametros
+
+      let retornaCidades = cidade3 =>(
+          {cidade1:"São Paulo", 
+          cidade2:"Carmo da cachoeira", 
+          cidade3
+        }
+        )
+        console.log(retornaCidades())
+
+        /*Não conseguimos definir this dentro de uma arrow function*/
+        let imprimirThis = () => {
+            console.log(this)
+        }
+
+        imprimirThis(); // invocando ela veremos que ela vale window
+        imprimirThis.call({nome:"Marciano"}) // mesmo forçando permanece valendo window
+
+        /*Então não existe this definição de this dentro de uma arrow function, ela pode ate herdar se o this já estiver em um outro contexto mas não exite definir em arrow function*/
+
+
+        
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
