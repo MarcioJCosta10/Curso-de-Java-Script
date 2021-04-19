@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constantes</title>
+</head>
+<body>
+    <script>
+        // Constante é um valor que não muda
+       
+        const anoNascimento = 1983;
+        console.log(anoNascimento)
+
+        // Tambem trabalha no escopo de bloco
+        if (true){
+            const autor = 'Marciano';
+            console.log(autor)
+        }
+        // Se eu tentar imprimir autor dará erro
+        //console.log(autor)
+
+        // Diferença de redeclarar para reatribuir
+        // Constante não permite nem redeclar nem retribuir; Var podemos redeclarar e reatribuir, let não podemos redeclarar mas podemos reatribuir
+
+        const nome = 'Marciano Costa';
+        console.log(nome)
+
+        // const nome = 'Marciano Jose da Costa' // Dará erro pois não podemos redeclarar uma constante no mesmo scopo com o mesmo nome
+        // Se eu isolar dentro de um bloco if passa a funcionar
+        if (true){
+            const nome = 'Marciano Jose da Costa'
+            console.log(nome)
+        }
+
+        // Constante também não podemos reatribuir
+
+        const nome1 = 'Fulano'
+        console.log(nome1)
+        //nome1= 'Fulano2' // Se eu tentar sobrescrever dará erro let e var é possivel redeclarar e reatribuir
+
+
+        //Peculiaridade de const, não podemos redeclarar nem reatribuir mas o valor da const pode alterar que ela continuará funcionando
+        // Por exemplo se const estiver sido declarada para guardar um array ou um objeto, os valore dentro do array e dentro do objeto podem ser alterados
+
+        const competencias = ['JavaScript', 'Python', 'Go']
+        console.log(competencias)
+
+        competencias[1] ='Scala' 
+        console.log(competencias)
+
+        const usuario = {
+            nome: 'Marciano',
+            idade: 37
+        }
+        console.log('Usuario inicial',usuario)
+
+        usuario.nome = 'Marciano Jose da Costa'// Reatribuindo 
+        usuario.cidade = 'São Paulo'           // Adicionando nova propriedade 
+        console.log('Usuario const reatribuido', usuario) // A constante constinua funcionando 
+
+
+
+
+        
+
+
+
+
+        
+        
+    </script>
+    
+</body>
+</html>
