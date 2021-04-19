@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop For</title>
+</head>
+<body>
+    <script>
+        //Repetidor for é semelhante ao while mas não precisamos criar contador fora 
+        for (let contador = 0 ; contador < 10; contador++)
+        {
+            console.log(`Esse é contador for ${contador}`); 
+        }
+        // Usando o for para percorrer um array
+        let numerosAleatórios =[3,5,10,2,19,21,13];
+        for (let contador = 0; contador < numerosAleatórios.length; contador++)
+        {
+            console.log(`${contador} - ${numerosAleatórios[contador]}`);
+        }
+        
+        // Podemos usar o for para decrementro
+        for (let contador = numerosAleatórios.length-1; contador>=0 ;contador--)
+        {
+            console.log(`Posição ${contador} - com decremento ${numerosAleatórios[contador]}`)
+        }
+        // No for o valor inicial e o contador são opcionais
+        let i = 0;
+        for ( ; i < numerosAleatórios.length-1; )
+        {
+            console.log(`Sem valor incial e incremento: ${numerosAleatórios[i]}`)
+            i++;
+        }
+
+        // Nem sempre precisa ser um array para trabalharmos com for 
+        let condicao = true;
+        let contador = 1;
+        for (;condicao;)
+        { 
+            if (contador % 5 === 0) // Nesse caso precisamos criar uma condição para quebrar e evitar que entre em um loop infinito
+            { 
+                condicao =false;
+            } 
+            console.log(`condição booleana simnples: ${contador}`)
+            ++ contador;
+
+        }
+        // No for também temos a palavra reservada break para interromper o loop
+        for (let i = 0; i < 10; i++)
+        {
+            if(i === 5)
+            {
+                break; // chegando no break ele sai do loop
+            }
+            console.log(`Utilizando o break ${i}`)  
+        }
+
+        // No for também temos a palavra reservada continue, a partir do continue o loop não será mais executado
+        //Porem ele vai continuar o loop, ou seja ele vai voltar para o loop e vai iterar o próximo valor
+     
+        for (let i = 0; i < 50; i++)
+        {
+            if (i % 2 === 0)
+            {
+                continue; // chegando aqui ele não imprime se for multiplo de 2 e volta para o loop e não imprime nada abaixo
+            }        
+            console.log(`Utilizando o continue ${i}`)  
+        }
+
+
+        // Existe outra forma de fazer o for que se chama for of
+        // É um atalho quando estamos iterando o array
+        // O for of é um atalho pois vai percorrer o array e já vai armazenar na variável
+        let numerosAleatorio =[3,5,10,'Marciano',2,19,21,13];
+        for (let item of numerosAleatorio){
+            console.log('for of -',item);
+        }
+
+        // Fazer um loop dentro de um outro loop
+        for (let i = 1; i <= 5; i++){
+            for( let j = 1; j <= 50; j++ ){
+                if (j % 2== 0)
+                {
+                    continue;
+                }
+                if (j > 7)
+                {
+                    break;
+                }
+                console.log(`i: ${i}; j: ${j}`)           }
+
+        }
+
+        for ( let i = 0; i < 100; i++)
+        {
+            if (i % 3 === 0 && i % 5 === 0 ) 
+            {
+                console.log(`Ping-Pong ${i}`)
+            } else if (i % 3 == 0) 
+            {
+                console.log(`ping - ${i}`)
+            } else if (i % 5 == 0 || i %5 == 0) 
+            {
+                console.log (`pong - ${i}`)
+            }
+            
+        }
+
+
+        // for in  é o loop para iterar objetos
+
+
+
+
+
+
+    </script>
+</body>
+</html>
