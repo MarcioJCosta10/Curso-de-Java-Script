@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetos em JavaScript</title>
+</head>
+<body>
+    <script>
+    
+       // O Objeto é um outro tipo de valor assim como array function
+        /* é um valor que permite armazenar uma coleção de pares e chaves de valor*/
+        /* É como se fosse variáveis detro de uma variável */
+     
+        let usuarioInicio = {
+            nome : 'Marciano',
+            idade : 37,
+            profissao: 'Programador'
+        };
+        console.log(usuarioInicio);
+        console.log(usuarioInicio.idade)// Posso imprimir idividualmente
+        console.log(usuarioInicio.profissao);
+        console.log(usuarioInicio.nome);
+
+        console.log(usuarioInicio['profissao'])
+
+        // Posso adicionarnovas propriedades no objeto
+        usuarioInicio.ano = 2019
+        console.log(usuarioInicio);
+        console.log(usuarioInicio.ano);
+
+        //Posso apagar uma propriedade do objeto
+        delete usuarioInicio.idade;
+        console.log(usuarioInicio);
+
+        //como chave valor posso passar outro objeto , posso passar array, functions
+        usuarioInicio.hobbeis = ['Musica', 'Programar', 'Vaijar'];
+        console.log(usuarioInicio);
+
+        usuarioInicio.competencias = {
+            linguagens:['JavaScript', 'Phyton',' Go','Scala', 'PHP'],
+            intrumentosMusicais:['Gitarra','Baixo','Bateria']
+        }
+        console.log(usuarioInicio);
+        //Posso adiciar function
+
+        let usuario2 = {
+            digaOi: function(name){
+                return `Olá ${name}`; 
+            }
+        };
+        console.log(usuario2);  
+        console.log(usuario2.digaOi('Marciano'));
+        console.log(usuario2.digaOi('Jose'));
+        
+        // Exite uma forma mais curta de passar uma function em um objeto
+        let usuario3 = {
+            digaOi(name){
+                return `Olá ${name}`; 
+            }
+        }
+        console.log(usuario3.digaOi('Costa'));
+
+        // Posso passar uma variável como valor de uma chave no objeto
+        let cor = 'verde';
+        let usuario4 = {
+            nome: 'Marciano Jose Costa',
+            cor: cor   
+        };
+        console.log(usuario4);
+
+        // Se o nome da propriedade é o mesmo nome da variavel que eu quero passar existe uma forma mais curta
+        let testecor = 'rosa';
+        let idade = 26;
+        let usuario5 = {
+            nome: 'Marciano Jose Costa',
+            testecor,  // dentro do objeto o nome da varialvel vai ser o nome da varial e o seu valor será po valor da variavel
+            idade
+        };
+        console.log(usuario5);
+
+        //Merge de vairios objeto, ou seja tenho dois ou mais  objeto e quero colocar ele detro de um só
+        let usuario6 = {
+            nome: 'Marciano Costa',
+            idade: 37
+        };
+
+        let extraInfo ={
+            pais: 'Brasil',
+            estado: 'São paulo'
+        };
+        /* O método Object.assign({},objeto1, objeto2) recebe 3 paramentro 1º o novo objeto {}, 2º o obejto que será mergeado, 3º o objeto que será mergeado, e posso passar quantos objetos eu quiser*/
+        let novoUsuário = Object.assign( {}, extraInfo, usuario6);
+        console.log(novoUsuário);
+
+        //Posso também não criar um novo objeto e modiificar um dos objetos 
+        //let novoUsuário = Object.assign(usuario6,extraInfo)
+        //console.log(novoUsuário);
+
+        // Existe ainda outra forma mais curta de fazer merge de objetos usando o ...sprad 
+
+        let usuario7 = {
+            nome: 'Marciano Costa',
+            idade: 37
+        };
+
+        let extraInfo2 ={
+            pais: 'Brasil',
+            estado: 'São paulo'
+        };
+        
+        let novoUsuário2 = {
+            ...usuario7,
+            ...extraInfo2,            
+                sexo: 'M',
+                profissao: 'Programador'
+            
+        };
+
+        console.log(novoUsuário2)
+
+        // Consigo passar para meu objeto o nome da propriedade de forma dinâmica
+        let nomeVariavel = 'Estado';
+        let nome = 'firstName';
+        let usuario8 = {
+            [nome]: 'Marciano Jose',
+            [nomeVariavel]:'São Paulo' // colocando entre colchetes o nome da propriedade vai receber o nome da variavel definida anteriormente
+        };
+        console.log(usuario8)
+
+        // getters e setters
+
+        let usuarios= [{
+            nome: ' Marciano',
+            idade: 37
+        }, {
+            nome: 'João',
+            idade: 19
+        }, {
+            nome: 'Maria',
+            idade: 21
+        }];
+        //console.log(usuarios[1].nome);
+        
+        //console.log(usuarios[2].nome);
+        
+        //console.log(usuarios[2].idade);
+
+        // Vou criar um objetos que vai servir para navegar no array de usuario9
+        let usuario = {
+            posicao: 0,
+            get atual(){ // Aqui usei a palavra reservada antes da função para quando for chamar a função chamá-la como uma propriedade
+                return usuarios[this.posicao] // aqui é para retornar um valor 
+            },
+            set atual(posicao){
+                    this.posicao = posicao;//aqui é para definir um valor
+                },
+            proximo(){
+                ++this.posicao; // this está dizendo que posição está nesse próprio objeto
+            },
+            anterior(){
+                --this.posicao;
+            }
+
+        };
+        console.log(usuario.atual);// {nome: ' Marciano', idade: 37}
+        usuario.proximo();
+
+        console.log(usuario.atual); // {nome: 'João', idade: 19}
+        usuario.proximo();
+
+        console.log(usuario.atual); // {nome: 'Maria', idade: 21}
+
+        usuario.anterior();
+        console.log(usuario.atual); // {nome: 'João', idade: 19}
+
+        usuario.atual = 0 // Aqui como estou tentando atribuir um valor ele vai usar o set
+        console.log(usuario.atual);// {nome: ' Marciano', idade: 37}
+
+        usuario.atual = 2 // Aqui como estou tentando atribuir um valor ele vai usar o set
+        console.log(usuario.atual); // {nome: 'Maria', idade: 21}
+
+
+
+
+
+
+        
+
+
+    </script>
+</body>
+</html>

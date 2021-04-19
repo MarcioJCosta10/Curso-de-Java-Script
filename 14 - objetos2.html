@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetos</title>
+</head>
+<body>
+    <script>
+        // Destruction
+
+        let novoUsuario = {
+            nome: 'Marciano',
+            idade: 37,
+            pais: 'Brasi',
+            YouTube:'Programador a Bordo'
+        };
+        /*
+        Assim é da forma tradicional
+        
+        let nome = novoUsuario.nome;
+        let pais = novoUsuario.pais;
+        console.log(nome);
+        console.log(pais);
+        */
+
+        //Assim é de uma forma mais curta com ECMA6
+        let { nome, idade, pais } = novoUsuario; // assim vou extrair a propriedade do objeto
+        console.log(nome,pais,idade);
+
+        // Eu posso atribuir a uma outra variavel a propriedade que extrai
+
+        let {nome: primeiroNome} = novoUsuario; // então aqui eu extrai o valor da propriedade nome e guardei na variável primeiroNome
+        console.log(primeiroNome);
+
+        let {YouTube: canal} = novoUsuario; // é como se colocassemos um apelido para a variável
+        console.log(canal);
+
+        let novoUsuario2 = {
+            nome: {
+                primeiro:'Marciano2',
+                //segundo: 'Costa' // se passarmos um valor ele irá sobrescrever
+                
+            }
+        };
+        // Do modo tradicional
+        /*
+        let primeiro = novoUsuario2.nome.primeiro;
+        console.log(primeiro)
+        */
+        let {nome:{primeiro}} =novoUsuario2
+        console.log(primeiro);
+       
+        // Como nas funções conseguimos definir um valor padrão para um prorpiedade caso ela não exista
+        let {nome:{segundo ='Jose'}} = novoUsuario2
+        console.log(segundo);
+
+        //Conseguimos usar destruction também como parametro de uma função
+        function imprimeUsuario({nome,idade,sexo, pais='Japão'}) { // Aqui como parametro da function posso aplicar po destruction
+            console.log(nome);                     //posso passar também um parametro default dentro do parametro destruction da function 
+            console.log(idade);
+            console.log(sexo);
+            console.log(pais);
+        };
+        let usuarioFunction = {
+            nome: 'Marciano Jose da Costa',
+            idade: 37,  
+            sexo: 'M',
+            pais: 'Brasil'
+        };           
+        imprimeUsuario(usuarioFunction);
+
+
+        // Método do Object para javascript -
+        
+        // Object.keys()
+        // Ele retorna um array e cada valor do array é uma propriedade do meu objeto
+        console.log(Object.keys(usuarioFunction)); // O parametro do Object.keys() é o objeto que queremos
+        
+        //Object.values
+        // Ele vai retornar apenas os valores do meu objeto
+        console.log(Object.values(usuarioFunction))
+
+
+        
+
+    </script>
+</body>
+</html>

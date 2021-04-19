@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function - Aula 06 </title>
+</head>
+<body>
+    <script>
+        //Primeiro Exemplo
+        function escreva ()
+        {
+            console.log("Olá Prgramador!");
+        }
+
+        //Chamando
+        escreva();
+        console.log('teste');
+        escreva();
+        escreva();
+
+        // Segundo exemplo
+        function escrevaMensagem(mensagem )
+        {
+            console.log(mensagem)
+        }
+        // Chamando
+        escrevaMensagem("Essa parte é para testar") // passando parâmetro
+        escrevaMensagem("Ainton techmka") // Passando parametros
+
+        // Mas minha função não está retornado nenhum valor
+        // Assim não consigo retornar o resultado de uma função em uma variável
+        let msg = escrevaMensagem("Airton Sena do Brasil");
+        console.log(msg)
+
+        // Funções que retorna valores
+        function soma (a,b)
+        {
+            return a + b
+        }
+        
+        let resultadoSoma = soma(10,5) // agora essa variável detem o valor de 10 + 5
+        console.log(resultadoSoma)
+        // ou
+        console.log(soma(10,10))
+
+        // Conseguimos passar qualquer tipo de parametros para a função:
+        //Numeros 
+        //StringArrays 
+        //Objetos
+        //Outras functions
+        function somaValoresArray(numeros)
+        {
+            let total = 0;
+            for (var num of numeros)
+            {
+                total = total + num;
+            }
+            return total
+            }         
+        
+        let resultadoSomaArray = somaValoresArray([1,2,3,4,10])
+        console.log('Somatudo', resultadoSomaArray)
+
+        // Nesse caso não sabemos os outros paramentros que virão
+        // Assim os outros paramentros serão recebidos e armazenados em formato de array
+                    //PARAMETRO REST//
+        function escreveEndereco (rua, cidade, pais, ...complementos)
+            {
+            console.log(rua);
+            console.log(cidade);
+            console.log(pais);
+            console.log(complementos);
+            }
+
+        escreveEndereco('Estrada Morro grande', 'Cotia','Brasil','São Paulo','CEP 06719500','BLOCO 15');
+
+
+            //FUNCÕES AUTO INVOCÁVEIS // POSSO DEIXAR A FUNÇÃO AUTO EXECUTAVEL SEM NOME
+            (function autoExecuta(nome) // Colocamos uma proteção para a função que é os ()
+            { 
+                console.log('Executei',nome); 
+            } ('Marciano'))
+
+            // É MUITO USADA PARA 
+            // PROTEGER VARIÁVEIS, FUNÇÕES. FECHAR UM ESCOPO DE FUNÇÕES PRIVADA, 
+            // NÃO MISTURAR SEU CÓDIGO COM CÓDIGO DE BIBILOTECA TERCEIRA 
+            // NÃO CONFLITAR O NOME DA SUA FUNÇÃO COM UMA FUNÇÃO QUE JÁ EXISTA NO SEU CÓDIGO
+            //  FUNÇÕES COM O MESMO NOME E FEITO POR OUTRAS PESSOAS
+
+
+            /* COMO UMA FUNCTION É UM TIPO DE VALOR CONSEGUIMOS ARMAZENAR UMA FUNCTION EM UMA VARIAVEL*/
+
+            let subtraDoisValores = function subrtrai(a,b){
+                return a-b
+            };
+            console.log(subtraDoisValores(10,3))
+            //Se eu tentar chamar a função sbtrai dará um erro pois ela está dentro da variável
+
+            
+            /* FUNÇÃO ANONIMA*/ 
+            let subtraTresValores = function(a,b,c){
+                return a-b-c
+            };
+            console.log(subtraTresValores(10,3,1))
+
+            /*FUNÇÃO CALLBACKS*/ // 
+            // São funções que são passadas como parametros para outras funções e executada dentro dela
+            // geralmente no fim do código, ou como uma estratégia para inserir uma customização ou uma transformação do valor final
+
+            function somaCallBack(a,b, fnCallBack)
+            {
+                return fnCallBack (a+b);
+            }
+            console.log(somaCallBack(10,13, function(total) {
+                return total * 2;
+            }));
+
+            //ou cria a função de fora e pasa ela como parametro
+            
+            let multiplica = function(total){
+                return total * 2;
+            }
+            console.log(somaCallBack(10,13, multiplica));
+
+            /* VALORES DEFAULT PARA OS PARAMETROS*/
+
+            function escreveNome(nome='Marciano',idade=26){// Assim eu defino valor padraõ
+                console.log(nome);
+                console.log(idade);
+            }
+
+            escreveNome('MarcianoCosta',37) // Mas seu eu não passar nada?
+            escreveNome(26) // Dará undefined
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
