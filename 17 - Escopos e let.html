@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escopos e tet </title>
+</head>
+<body>
+    <script>
+        /* ESCOPO DEFINE A VISIBILIDADE DAS VARIÁVEIS E FUNÇÕES NO JAVASCRIPT */
+
+        // GLOBAL
+
+        let nome = 'Marciano'; // Aqui a variável é global, no browser ela fica dentro do window
+        console.log(nome);
+
+        function imprimeNome( ) {
+            console.log(nome);
+        }
+        imprimeNome(nome)
+        
+        // LOCAL
+        function imprimeIdade( ) {
+            let idade= 27
+            console.log(idade);
+        }
+         imprimeIdade()
+        
+        function imprimePais( ) { // se não declararmos var ou let o sistema define a variável como global
+            pais = "Brasil"
+            console.log(pais);            
+        }        
+        imprimePais()
+        console.log(pais)
+        console.log(window.pais) // aqui ele ainda imprime pois está no objeto global window
+        console.log(this.pais)  // ou mesmo no this como já vimos
+
+      
+
+        /* ESCOPO DINAMICO */// Não se sabe o valor da variável até que ela seja realmente executada
+                             // Só se sabe o valor da variável em tempo de execução
+                             // Não é previsivel mas permite flexibilidade
+                             // O puro exemplo de escopo dinâmico é o this
+        
+
+        //exemplo:
+
+        function imprimeThis(){
+            console.log('imprimeThis',this);
+        }
+        function imprimeMensagem(){ // imprimir o valor de this com call, esse primeiro parametro será o valor que this terá
+            imprimeThis.call({msg: 'Sou um objeto'});
+        }
+        function imprimeMensagem2(){// Aqui também estou invocando a function imprime this passando com o call qual será o valor de this
+            imprimeThis.call(['Sou um array']);
+        }
+        imprimeMensagem();
+        imprimeMensagem2();
+        // Só quando executei a functio que o javascript soube o real valor de this ou seja em tempo de execução
+        imprimeThis() // aqui se eu chamar só imprime this o this está no seu valor padrão window
+
+       /* LEXICAL ESCOPO*/  // É quando você tenta imprimir o valor de uma variável e ele já sabe ou seja já está definida
+        //Exemplo
+
+        function usuario(){ // Esse é o escopo  Let's call
+            let nome = "Marciano"
+            console.log(nome)
+            return function(){
+                let sobrenome = 'Costa'
+                console.log(nome,sobrenome)
+            }
+        }
+        let user = usuario() // então como minha function retorna outra function tenho que armazenar ela em uma variavel e depois executar a variável 
+        user();              // então vai imprimir o nome o sobrenome pois o escopo de nome está no mesmo escopo de sobrenome
+
+            /* ESCOPO DE BLOCO*/
+            // São escopos ainda menores usados em switch case, for loop, 
+             // let define um escopo ainda menor com escopo dentro do bloco
+             if (true){
+                 var youtube = "@programador"
+                 let autor = "marciano"
+                 console.log(youtube)// Aqui ela imprime normal dentro e fora do escopo
+                 console.log(autor) // Aqui só imprime dentro do escopo do if
+             }
+             console.log(youtube)
+             //console.log(autor)// Aqui dará erro pois ela só foi definida dentro do if
+
+             // Outro detalhe é que não é possível recriar uma variável declarada com let
+             let sobrenome = "Jose Costa"
+             //let sobrenome = "Jesus" // Aqui dará erro
+             sobrenome = "Jesus"       // Assim não dará erro
+             console.log(sobrenome)     // Mas se isolarmos em um bloco com {} não dará erro
+
+             var sobrenome1 = "Jose Costa"
+             console.log(sobrenome1)
+             var sobrenome1 = "Jesus" // Aqui não dará erro pois troquei let por var
+
+
+
+
+
+    </script>
+</body>
+</html>
