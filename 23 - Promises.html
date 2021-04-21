@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises</title>
+</head>
+<body>
+
+    <script>
+        /* 
+            COMO TER O CONTROLE TOTAL DA PARTE ASSINCRONA DE JS?
+
+            JAVA SCRIPT É SINGLE THREAD - O código é processado linha por linha.
+
+            JAVACRIPT É IO NÃO BLOQUEANTE - A APLICAÇÃO NÃO PRECISA ESPERAR O RETORNO PARA CONTINUAR EXECUTANDO O CÓDIGO
+
+            JAVASCRIPT É ASSINCRONO: ISSO É TER ALGO PROCESSANDO EM PARALELO ENQUANTO O CÓDIGO CONTINUA SENDO PROCESSADO
+
+            COMO CONTROLAR ESSA QUESTÃO ASSINCRONA, DE SÓ IR EM UM SERVIÇO APÓS O RETORNO DE OUTRO?
+
+            PARA ISSO SURGIU AS PROMISES: UM TIPO DE API, É UM OBJETO EM JAVASCRIPT QUE NOS DÁ UM CONJUTO DE FUNCIONALIDADE PARA RESOLVER ESSAS QUESTÕES:
+        
+        */
+
+            console.log('primeiro');
+            setTimeout(function(){       // setTimeout() É controlado por uma API do browser de tempo, é o browser que avisa ao JS
+                console.log('segundo')
+            },1000)            
+            console.log('Terceiro');            
+            console.log('Quarto');
+                                         // setTimeout() É controlado por uma API do browser de tempo, é o browser que avisa ao JS
+            
+            /*
+                A ENGINE JAVASCRIPT QUE PROCESSA DE FATO O JS NÃO É ASSINCRONO E SIM UM ECOSISTEMA INTEIRO DO NODE, QUE FAZ QUE O JS FUNCIONE DE FORMA ASSINCRONA
+                
+                As funções entram em uma fila, essa fila é chamada de callbackquery
+
+            */
+
+            /* COMO PROMISES ENTRA NESSE UNIVERSO? Promisse é uma interface para gerenciar essa parte assincrona do JS
+                POSSUI 4 ESTADOS:
+                PENDENTE -  Quando acabamos de realizar a requição por exemplo
+                REALIZADA - Quando deu tudo certo
+                REJEITADA - Quando deu algum erro na requisição
+                ESTABELECIDA - Estado final independente se é REALIZADA ou REJEITADA    
+                     
+            */
+                                        // Quando trabalhamos com promise, a função que é assincrona tem que retornar uma promise
+                                         // É uma  promessa de vai tratar o assincrono e vai dizer se foi realizada ou rejeitada ou pendente    
+            function jaRealizada(){ 
+                return Promise.resolve()// PASSCEP         // Tenho que retornar uma promises
+                                        //EX:2             // Existem formas de chamar essa promises: new Promises mas nesse caso vou retornar uma Promises ja realizada com o método resolve
+            }                                             // Como podemos ver a promise tem os seu métodos:
+                                                          // Quando a promises é realizada ela nos dá o método chamado then        
+                                                          // O then é chamado depois que a promise é resolvida,
+                                                          // no then nos passamos uma função que é a funçã que queremos que seja chamada assim que a promise for resolvida
+                                                          // Posso passar um parametro detro do resolve e a função que será chamada no then recebe esse valor como parâmetro
+            jaRealizada().then(function(valorPassadoNoResolve){  
+            console.log('Promises Resolvida',valorPassadoNoResolve)
+        })                                                                                          
+            /* AS PROMISES TEM UMA FILA ESPECIAL PREFERÊNCIAL*/
+
+                                                            //As promises rejeitada tem o método reject que vai cair em outro bloco de catch()
+            function jaRejeitada(){                         // dentro do catch passo uma function que vai tratar o motivo do erro que causou a rejeição
+                return Promise.reject();
+            }
+            jaRejeitada().catch(function(){
+                console.log('REJEITADA')
+            })
+
+            // ATÉ AQUI É MAIS PARA EXEMPLIFICAR MAS ESSA SINTAXE É POUCO USADA
+            // PARA TRABALHAR MAIS É USADA A SINTAXE A SEGUIR...
+
+            function promiseTrabalhada(){
+                return new Promise( function( resolve, reject) {           // Nesse caso passamos uma função para o retorno do new Promise que é o resolve e o reject, esses nomes são conveções e pode ser qualquernome
+                  /*Nessa parte é onde iremos por ex: fazer request*/      //dessa forma também será retornado uma promises, essa promises recebe uma função que a promise vai gerenciar
+                   //resolve('Olá Programador!') 
+                                                                             // Essa é a forma mais comum 
+                    setTimeout(function(){
+                        resolve('Hellho World')                              //nesse exemplo depois de 1s ele chamou o hello world
+                    },1000)
+                })
+            }
+            promiseTrabalhada().then(function(message){ //esse then só é executado quando a função de tem a promises chama o resolve
+                console.log(message)
+
+            })
+
+            // Porque tem que ter o return new Promise e não posso passar só Promise.resolve()
+            // É Por que eu não disse que ele retornar uma promisse
+            // No JS quando criamos uma função sem retorno por padrão ele da o como return undefined, então nesse caso ela não está retornando uma Promises.
+            //temos que especificar sempre que a função retorna uma promisse
+
+            // Exemplo como um request ao via cep:
+            //https://viacep.com.br/ws/01001000/json/
+            // Vamos fazer a requisição usando o método fetch() -- esse método é uma API do Browser
+            //o fetch() já retorna uma promise
+            
+            window.fetch('https://viacep.com.br/ws/06719500/json/')
+            .then(function(data){                                            // como retorna uma promises passo o then() que espera uma função 
+                                                                             // o fetch() retornar uma valor e esse valor será passado para a função como parâmetros nesse caso chamaremos de data                                                           
+                                                                            // nesse caso ele não vai retornar o corpo da msg http, que seria o encdereço do usuário, ele retornar a msg http em si
+                                                                            // e eu consigo extrair o corpo da msg que é o endereço do usuário
+            data.json().then(function(endereco){                             // ai eu uso o método .jason() para extrair essa msg em json que també retornar uma promise que quando for resolvida  eu dou outro.then()                                            
+            console.log(endereco) }                                          // e ele sim vai retornar o json  
+
+            )})   
+            
+            /* EX: 2
+            //Poderia realizar encadeamento de Promise
+             // Nesse caso vai bater no reject  
+             
+             jaRealizada()
+             .then(function(cep){
+                 return window
+                 .fetch('https://viacep.com.br/ws/'+cep+'/json/')
+
+             })
+             .then(function(data){
+                return data.json()
+             })
+             .then(function(endereco){
+                 return jaRejeitada()
+
+             })
+             .then(function(endereco){
+                 console.log(endereco)
+             })
+             .catch(function(){
+                 console.log("Aconteceu algum erro") // vai bater aqui
+             })
+             
+             */
+             
+             
+             
+                                                                    
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
