@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises Parte-2</title>
+</head>
+<body>
+    <script>
+        
+        /*
+        // Vamos tratar de encadeamento do promises
+        // É Útil para realizarmos operações assíncronas onde uma operação depende do valor da anterior
+
+
+        function jaRealizada(){ 
+                return Promise.resolve('06719500')                                        
+            }               
+
+        jaRealizada().then(function(valorPassadoNoResolve){  
+            console.log('Promises Resolvida',valorPassadoNoResolve)
+        }) 
+
+        function jaRejeitada(){                    
+                return Promise.reject();
+            }
+            jaRejeitada().catch(function(){
+                console.log('REJEITADA')
+            })
+
+
+            function promiseTrabalhada(){
+                return new Promise( function( resolve, reject) {        
+                  
+                    setTimeout(function(){
+                        resolve('Hellho World')                        
+                    },1000)
+                })
+            }
+
+            promiseTrabalhada().then(function(message){ 
+                console.log(message)
+
+                //'https://viacep.com.br/ws/06719500/json/'
+
+            })
+            
+           // Quando temos uma operação assíncrona onde uma operação depende do resultado de uma anterior encadeamos com o then()
+            jaRealizada()
+             .then(function(cep){
+                 return window
+                 .fetch('https://viacep.com.br/ws/'+cep+'/json/') 
+
+             })
+             .then(function(data){
+                return data.json()
+             })
+             .then(function(endereco){
+                 return jaRejeitada()
+
+             })
+             .then(function(endereco){
+                 console.log(endereco)
+             })
+             .catch(function(){
+                 console.log("Aconteceu algum erro") // vai bater aqui
+             })
+             */
+            // APARTIR DAQUI ESSE MESMO CÓDIGO SERÁ REFATORADO, POIS NESSE EXEMPLO ACIMA TEMOS AS FUNÇÕES ANÔNIMAS QUE POR MUITOS MOTIVOS NÃO É LEGAL USARMOS
+             
+        function jaRealizada(){ 
+                return Promise.resolve('06719500')      // Quando essa promises é resolvida ela injeta o CEP n                                  
+            }               
+
+        jaRealizada().then(function(valorPassadoNoResolve){  
+            console.log('Promises Resolvida',valorPassadoNoResolve)
+        }) 
+
+        function jaRejeitada(){                    
+                return Promise.reject('Fui rejeitada');
+            }
+            jaRejeitada().catch(function(){
+                console.log('REJEITADA')
+            })
+
+
+            function promiseTrabalhada(){
+                return new Promise( function( resolve, reject) {        
+                  
+                    setTimeout(function(){
+                        resolve('Hellho World')                        
+                    },1000)
+                })
+            }
+
+            promiseTrabalhada().then(function(message){ 
+                console.log(message)
+
+                //'https://viacep.com.br/ws/06719500/json/'
+
+            })
+            
+          // Então vamos criar as functions fora e no then() ficar só chamando pelo nome da functions
+
+            function pegaCep(cep){
+                 return window.fetch('https://viacep.com.br/ws/'+cep+'/json/') 
+             }
+            function extraiEndereco(data){
+                return data.json()
+             }
+             function imprimeEndereco(endereco){
+                 console.log(endereco)
+             }
+             function trataErro(erro){
+                 console.log("Aconteceu algum erro",erro) 
+             }
+
+            jaRealizada()
+             .then(pegaCep)
+             .then(extraiEndereco)
+             //.then(jaRejeitada)                 // Aqui é para mostrar que mesmo rejeitada o finally será chamado
+             .then(imprimeEndereco)
+             .catch(trataErro)
+             .finally(function(){                         //Esse é um método novo que ainda está sendo implantado pelos navegadores,
+                                                          // Independente se foi resolvida ou se foi rejeitada a promise sempre vai bater no finally()  
+             console.log('Sempre executado, se resolvida ou não')   
+            })      
+            
+            //  AGORA VAMOS CONHECER O PROMISES ALL
+            //  É uma forma de invocar promises só que uma não pode depender do valor da outra, pois são executadas pelo browser nesse caso simultâneo e em paralelo
+            //  Então uma não consegue ser executada depós da outra, são executadas ao mesmo tempo e podem retornar em momentos diferentes
+            // O legal é que passamos um array de promises e quando todas forem resolvidas, ele retorna uma array com todas as promises resolvidas
+            
+            Promise.all([             
+                pegaCep('06719500'),    // recebe um array de promises
+                jaRealizada()           
+            ]).then(                    // também tem um .then() que quando minha promoise for resolvida vai chamar a função promisesResolvuidas
+                function(promisesResolvidas){// promisesResolvidas também é um array, a 1ª Posição desse array será o valor da promises resolvida jaRealizada()
+                                             // a 2ª Posição será o valor da promise jaResolvida do pegaCep()   
+              console.log('Aqui é o promise.all()',promisesResolvidas)  // o retorno das promises será sempre na ordem das promises passadas no promoise all    
+                })                                                      // para enterdermos mais a jaRealizada() retornar muito mais rápido que a pega cep mas não hora de imprimir seguira a ordem que foi passada
+
+
+
+                // Aqui é para enterdermos sobre o retorno da promises.all()
+
+                function demora500ms(){
+                return new Promise( function( resolve, reject) {        
+                  
+                    setTimeout(function(){
+                        resolve('demora500ms')                        
+                    },500);
+                })
+            }
+            function demora200ms(){
+                return new Promise( function( resolve, reject) {        
+                  
+                    setTimeout(function(){
+                        resolve('demora200ms')                        
+                    },500);
+                })
+            }
+
+            Promise.all([             
+                demora500ms(),    
+                demora200ms()           
+            ]).then(                   
+                function(promisesResolvidas){                                             
+              console.log('Aqui é o promise.all()',promisesResolvidas)  // sempre retonra na ordem que passamos independente se uma é reolvida antes da outra
+                })                                                      // como retorna todas ao mesmo tempo o then só será chamada depois que todas as requisições terminarem
+
+                // Bem parecido com promises all, mas assim que uma promises é resolvida ele já retorna o valor da única promise resolvida
+                // retorna o valor da primeira e única resolvida ou rejeitada
+                Promise.race([             
+                demora500ms(),    
+                demora200ms(),
+                jaRejeitada()           
+            ]).then(                                    
+                function(promisesResolvidas){                                             
+              console.log('Aqui é o promise.all()',promisesResolvidas) 
+                },function(valorRejeitado){         /// o.then() pode receber dois parâmetros uma para resolvido e um para rejeitado
+                    console.log('Aqui o valor da já rejeitada será a primeira a retornar',valorRejeitado)
+                })
+                
+
+
+
+    </script>
+    
+</body>
+</html>
