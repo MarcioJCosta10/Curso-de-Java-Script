@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Await</title>
+</head>
+<body>
+    <script>
+        // //O que é o async await?
+        // /*
+        //     Toda linguagem de programação tem uma parte assincrona;
+        //     Ex: Pedido ao garçom
+        //     Ex: request a uma API do bd
+
+        //     async await são algumas das formas que JS provê para trabalharmos o assincronismo
+        // */
+
+        // // Antes para tratarmos do assincronismo em JS uávamos uma função de callback
+        // //ex:
+        // Request.get('http://site.com', function(resultado){ // na requisição o ultimo parametro era essa função de calback 
+        //                                            // È essa função de callback que vai receber o resultado dessa requisição 
+        //    request.get(`http://site.com/resultado.id`, function(){                  // Aqui eu teria o resuldado do request, mas isso pode gerar o problema de request hell
+        //     request.get(`http://site.com/${resultado.id}/${resultado2.id}`,         // com varios request por exemplo teremos o famos haduken que não é nada escalavel, para testar o código é ruim
+        //     function(resultado2){
+
+        //     } )
+        //    })
+        //  }) 
+        // //  
+
+        //     // Ai surigram as Promises
+        //     Request.get('http://site.com')
+        //     .then(resultado => Request.get(`http://site.com/resultado.id`))
+        //     .then()                
+        //     // Com isso começamos a evitar o callback hell
+
+        // Depois disso surgiu o async await para gerenciar o assincronismo
+            // Para testarmos vamos usar o site JsonPlaceholder
+           //O que é o async await? Server para ajudarmos a gerenciar o assincronismos de forma mais sucinta e elegante, pois é mais parecido com a forma sincrona do código
+           // await vai ser sempre colocado ante de uma opração assincrona 
+           // await tem que estar dentro de uma função e essa função tem que ser assincrona
+           //Ex: primeiro vamos fazer com promises, vamos fazer uma requisição
+        //    function getPosts(){
+        //        fetch('https://jsonplaceholder.typicode.com/posts') //fetch() já retorna uma promises
+        //        .then(function(d){                                  // o fetch() retorna um wadeable streams e ai precisamos converter em json 
+                     
+        //            return d.json()
+        //        })
+        //        .then(console.log)
+        //     }
+        //        getPosts(); // Aqui ele chama a função com o retorno do request
+
+        // Agora voltando com async awayt
+
+        //O async await trabalha muito bem com promise, nesse caso um completa o outro
+        // Você sempre deve dar um await em uma promise, se dermos um await em um dado que não é uma promises ele converte esse dado em uma promise
+        // então podemos criar promises e dar um await para pegar o resultado que essa promise te prove
+        // como ja foi dito o fetch() retorna um promises, e nesse exemplo ao invés de dar os um .thren() para pegar esse retorno da promises daremos um await
+        // e toda função que tem um await dentro ela precisa sem async
+
+
+        // async function getPosts(){
+        //     const result = await fetch('https://jsonplaceholder.typicode.com/posts') // nesse ponto estou travando minha aplicação e dizendo que preciso esperar o resultado do meu fetch()
+            
+        //     const data = await result.json()
+        //     console.log(data); //essa linha só será executada quanto tiver o retorno do meu request
+        //                        // como o data está recebendo o result.json() está retornando uma promises ele irá imprimir promise pendente ai basta darmos um await antes para ele aguardar o retorno da promises e só após imprimir 
+        // }
+        //        getPosts(); 
+
+        // // Então sempre que tivermos uma promise podemos dar um await se quisermos bloquear o código naquele trecho para esperar o resultado para usarmos  esses resultado na próxima linha
+        // // Então sempre daremos um await com uma promise, seja gerado pela sintaxe de promise ou porque uma função minha tem await também, se uma função minha tem await é como se fosse uma promises, veremos mais para frente
+
+            // Uma coisa que muita gente faz e que é reduntante
+            // como quero que o resultado da minha função getPosts seja o meu resultado jé em json muita gente á um await depois do retunr
+            // para quando chegar em const posts = getPosts()
+
+        async function getPosts(){
+            const result = await fetch('https://jsonplaceholder.typicode.com/posts') 
+            
+            //return await result.json() // redundante
+            return result.json()
+        }
+
+        // const posts = await getPosts(); // esse await não vai funcionar pois o pai dele não é uma função assincrona, eu estou na raiz do meu script, ele vai dar um erro pois preciso que seja uma função assincrona
+        // console.log(posts)
+
+        // Então vou criar uma função que é auto invocáel, onde criamos uma função e já invocamos ela imediatamente
+       /* 
+        ( async function(){  // os parentes são para escopar essa função para que ela não fique solta no código
+            const posts = await getPosts();// e ai jogo o código dentro dessa função
+            console.log(posts)             // tivre que fazer tudo isso pois não posso usar o await se não for uma função assincroina 
+        
+        }())
+     */
+        // Mas isso é reduntate, e não precisamos dar um await em :return await result.json() pois tudo isso já é uma função assincrona
+        // Quando usamos result.json ele já retorna uma promise então não precisamos forçar ela ser resoilvida antes, nesse caso colocamos ela para ser resolvida quando chamarmos o getPosts()
+        // Só o fato de usar await dentro da função getPosts() preciso usar o await quando invoco essa função 
+
+        
+
+        // Outra coisa o await e compatível com promises e vice-versa
+        // vimos até agora que o fetch e .json retornam promises e trabalharemos o await mesmo sendo promise
+        // mas o inverso também funciona, nesse caso o getPosts é uma função assíncrona que tem await mas eu consigo trabalhar como se fosse promises
+/* 
+        getPosts().then(console.log) // então minha função assincrona que tem um await podemos invocar essa função como se fosse um promises ou também utilizado await
+
+ */           
+
+       // O await trabalha sempre com promise, se usarmos um await em uma expressão que não é uma promise ele vai converter esse dado em uma promise
+       //Ex:
+       
+      /* 
+       async function getNumero(){
+           return await 2;
+       }
+       
+       console.log(getNumero()) // Aqui vou ter uma promise pendente por que tudo que é assincrono você só consegue invocar o seu valor com o .then() como se fosse uma promises ou se usar o await
+       
+       // Então para invocar isso:
+       getNumero().then(console.log)// vai imprimir o seu valor que é 2
+
+       //ou criar a função assincrona
+       (async function(){  
+            const numero = await getNumero();
+            console.log(numero)
+
+       })
+    */
+
+    // Como foui dito o await bloqueia o seu código, já uma promise não
+     getPosts().then(console.log) // Promise não bloqueia
+    //await getPosts()            // bloqueia      
+    console.log(' VALOR PRIMEIRO')
+
+    // Parei em 42min e 20s
+
+    </script>    
+</body>
+</html>
